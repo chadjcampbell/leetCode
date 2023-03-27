@@ -14,16 +14,14 @@ class MinStack {
   }
 
   push(val: number): void {
-    if (this.mins.length === 0 || val <= this.mins[this.mins.length - 1]) {
+    if (this.mins.length === 0 || val <= this.getMin()) {
       this.mins.push(val);
-    } else {
-      this.mins.unshift(val);
     }
     this.vals.push(val);
   }
 
   pop(): void {
-    if (this.vals.pop() === this.mins[this.mins.length - 1]) {
+    if (this.vals.pop() === this.getMin()) {
       this.mins.pop();
     }
   }
@@ -32,7 +30,7 @@ class MinStack {
     return this.vals[this.vals.length - 1];
   }
 
-  getMin(): number | null {
+  getMin(): number {
     return this.mins[this.mins.length - 1];
   }
 }
