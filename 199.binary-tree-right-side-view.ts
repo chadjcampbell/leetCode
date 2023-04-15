@@ -19,13 +19,24 @@
  * }
  */
 
-//root=1, root.left=2, should be [1,2]
-
 function rightSideView(root: TreeNode | null): number[] {
   let result: number[] = [];
-  while (root) {
-    result.push(root.val);
-    root = root.right;
+  if (!root) return result;
+  let queue: TreeNode[] = [root];
+  while (queue.length > 0) {
+    let length = queue.length;
+    for (let i = 0; i < length; i++) {
+      let curr = queue.pop();
+      if (i === length - 1) {
+        result.push(curr.val);
+      }
+      if (curr.left) {
+        queue.unshift(curr.left);
+      }
+      if (curr.right) {
+        queue.unshift(curr.right);
+      }
+    }
   }
   return result;
 }
