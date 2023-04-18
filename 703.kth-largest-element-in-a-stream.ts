@@ -7,16 +7,65 @@
 // @lc code=start
 class KthLargest {
   k: number;
-  nums: number[];
+  heap: number[];
   constructor(k: number, nums: number[]) {
     this.k = k;
-    this.nums = nums.length > 1 ? nums.sort((a, b) => a - b).slice(-k) : nums;
+    this.heap = [-1000000];
+    nums.forEach((num) => {
+      this.add(num);
+    });
   }
 
   add(val: number): number {
-    this.nums.push(val);
-    this.nums.sort((a, b) => a - b);
-    return this.nums[this.nums.length - this.k];
+    if (this.heap.length === 1) {
+      this.heap.push(val);
+      return val;
+    }
+    this.heapPush(val);
+    if (this.heap.length - 1 > this.k) {
+      this.heapPop();
+    }
+    return this.heap[1];
+  }
+
+  heapPush(val: number): void {
+    this.heap.push(val);
+    let i: number = this.heap.length - 1;
+    while (i > 1 && this.heap[Math.floor(i / 2)] > this.heap[i]) {
+      let temp = this.heap[i];
+      this.heap[i] = this.heap[Math.floor(i / 2)];
+      this.heap[Math.floor(i / 2)] = temp;
+      i = Math.floor(i / 2);
+    }
+  }
+
+  heapPop(): void {
+    if (this.heap.length === 1) return;
+    if (this.heap.length === 2) {
+      this.heap.pop();
+      return;
+    }
+    this.heap[1] = this.heap.pop()!;
+    let i = 1;
+    while (2 * i < this.heap.length) {
+      if (
+        2 * i + 1 < this.heap.length &&
+        this.heap[2 * i + 1] < this.heap[2 * i] &&
+        this.heap[2 * i + 1] < this.heap[i]
+      ) {
+        let temp = this.heap[i];
+        this.heap[i] = this.heap[2 * i + 1];
+        this.heap[2 * i + 1] = temp;
+        i = 2 * i + 1;
+      } else if (this.heap[2 * i] < this.heap[i]) {
+        let temp = this.heap[i];
+        this.heap[i] = this.heap[2 * i];
+        this.heap[2 * i] = temp;
+        i = 2 * i;
+      } else {
+        break;
+      }
+    }
   }
 }
 
