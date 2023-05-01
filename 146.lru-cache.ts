@@ -7,13 +7,11 @@
 // @lc code=start
 class LRUCache {
   capacity: number;
-  size: number;
   map: Map<number, LLNode>;
   head: LLNode;
   tail: LLNode;
   constructor(capacity: number) {
     this.capacity = capacity;
-    this.size = 0;
     this.map = new Map();
     this.head = new LLNode();
     this.tail = new LLNode();
@@ -38,36 +36,37 @@ class LRUCache {
       this.remove(node!);
       this.add(node!);
     } else {
-      if (this.size >= this.capacity) {
-        this.remove(this.tail.prev!);
-        this.map.delete(key);
-        this.size--;
-      }
-      const nodeToAdd = new LLNode(value);
+      const nodeToAdd = new LLNode(key, value);
       this.add(nodeToAdd);
       this.map.set(key, nodeToAdd);
-      this.size++;
+      if (this.map.size > this.capacity) {
+        let LCU = this.tail.prev;
+        this.remove(LCU!);
+        this.map.delete(LCU!.key);
+      }
     }
   }
   add(node: LLNode): void {
-    const nodeToAdd = new LLNode(node.val);
-    nodeToAdd.next = this.head.next;
-    nodeToAdd.prev = this.head;
-    this.head.next = nodeToAdd;
+    node.next = this.head.next;
+    node.prev = this.head;
+    this.head.next!.prev = node;
+    this.head.next = node;
   }
   remove(node: LLNode): void {
     if (node.next && node.prev) {
-      node.next = node.next?.next;
-      node.prev = node.prev?.prev;
+      node.next.prev = node.prev;
+      node.prev.next = node.next;
     }
   }
 }
 
 class LLNode {
+  key: number;
   val: number;
   prev: LLNode | null;
   next: LLNode | null;
-  constructor(val = -1, prev = null, next = null) {
+  constructor(key = -1, val = -1, prev = null, next = null) {
+    this.key = key;
     this.val = val;
     this.prev = prev;
     this.next = next;
