@@ -6,30 +6,33 @@
 
 // @lc code=start
 function numIslands(grid: string[][]): number {
-  let count = 0;
-  let r = 0;
-  let c = 0;
-  let visited = [];
-  function findIsland(
-    grid: string[][],
-    r: number,
-    c: number,
-    visited: string[]
-  ) {
-    let thisCoord = r.toString() + c.toString();
+  let count: number = 0;
+  function dfs(grid: string[][], r: number, c: number): void {
     if (
       Math.min(r, c) < 0 ||
-      grid[r][c] == "0" ||
-      visited.includes(thisCoord)
+      r >= grid.length ||
+      c >= grid[0].length ||
+      grid[r][c] == "0"
     ) {
-      //youve hit water or already visited
+      return;
     }
-    visited.push(thisCoord);
-    findIsland(grid, r + 1, c, visited);
-    findIsland(grid, r - 1, c, visited);
-    findIsland(grid, r, c + 1, visited);
-    findIsland(grid, r, c - 1, visited);
+    grid[r][c] = "0";
+    dfs(grid, r + 1, c);
+    dfs(grid, r - 1, c);
+    dfs(grid, r, c + 1);
+    dfs(grid, r, c - 1);
   }
+
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[0].length; c++) {
+      if (grid[r][c] == "1") {
+        count++;
+        dfs(grid, r, c);
+      }
+    }
+  }
+
   return count;
 }
+
 // @lc code=end
