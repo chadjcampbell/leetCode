@@ -1,7 +1,13 @@
 type F = (x: number) => number;
 
 function compose(functions: F[]): F {
-  return function (x) {};
+  return function (x) {
+    while (functions.length > 0) {
+      let endFunc = functions.pop();
+      x = endFunc!(x);
+    }
+    return x;
+  };
 }
 
 /**
