@@ -4,11 +4,12 @@ function memoize(fn: Fn): Fn {
   let memo = {};
   return function (...args) {
     let argsString = [...args].toString();
-    if (memo[argsString]) {
+    if (memo[argsString] !== undefined) {
       return memo[argsString];
     } else {
-      memo[argsString] = fn(...args);
-      return fn(...args);
+      let memoValue = fn(...args);
+      memo[argsString] = memoValue;
+      return memoValue;
     }
   };
 }
