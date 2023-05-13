@@ -1,7 +1,16 @@
 type Fn = (...params: any) => any;
 
 function memoize(fn: Fn): Fn {
-  return function (...args) {};
+  let memo = {};
+  return function (...args) {
+    let argsString = [...args].toString();
+    if (memo[argsString]) {
+      return memo[argsString];
+    } else {
+      memo[argsString] = fn(...args);
+      return fn(...args);
+    }
+  };
 }
 
 /**
