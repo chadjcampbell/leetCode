@@ -1,7 +1,13 @@
 type F = (...p: any[]) => any;
 
 function debounce(fn: F, t: number): F {
-  return function (...args) {};
+  let delay;
+  return function (...args) {
+    clearTimeout(delay);
+    delay = setTimeout(() => {
+      return fn(...args);
+    }, t);
+  };
 }
 
 /**
