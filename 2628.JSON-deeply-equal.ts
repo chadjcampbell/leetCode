@@ -1,18 +1,32 @@
 function areDeeplyEqual(o1: any, o2: any): boolean {
-  if (typeof o1 === "object" && typeof o2 === "object") {
-    const o1entries = Object.entries(o1);
-    const o2entries = Object.entries(o2);
-    if (o1entries.length !== o2entries.length) return false;
-    for (let i = 0; i < o1entries.length; i++) {
-      return areDeeplyEqual(o1entries, o2entries);
+  if (o1 === null || o2 === null) {
+    return o1 === o2;
+  }
+  if (typeof o1 !== typeof o2) {
+    return false;
+  }
+  if (typeof o1 !== "object") {
+    return o1 === o2;
+  }
+
+  if (Array.isArray(o1) || Array.isArray(o2)) {
+    if (String(o1) !== String(o2)) {
+      return false;
     }
-  } else if (Array.isArray(o1) && Array.isArray(o2)) {
-    if (o1.length !== o2.length) return false;
     for (let i = 0; i < o1.length; i++) {
-      if (o1[i] !== o2[i]) return false;
+      if (!areDeeplyEqual(o1[i], o2[i])) {
+        return false;
+      }
     }
   } else {
-    if (o1 !== o2) return false;
+    if (Object.keys(o1).length !== Object.keys(o2).length) {
+      return false;
+    }
+    for (const key in o1) {
+      if (!areDeeplyEqual(o1[key], o2[key])) {
+        return false;
+      }
+    }
   }
   return true;
 }
