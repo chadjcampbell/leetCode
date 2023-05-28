@@ -4,7 +4,20 @@ declare global {
   }
 }
 
-Array.prototype.groupBy = function (fn) {};
+Array.prototype.groupBy = function (fn) {
+  let result = {};
+
+  this.forEach((element) => {
+    const key = fn(element);
+    if (key in result) {
+      result[key].push(element);
+    } else {
+      result[key] = [element];
+    }
+  });
+
+  return result;
+};
 
 /**
  * [1,2,3].groupBy(String) // {"1":[1],"2":[2],"3":[3]}
