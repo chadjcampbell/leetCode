@@ -4,7 +4,9 @@ declare global {
   }
 }
 
-Function.prototype.callPolyfill = function (context, ...args): any {};
+Function.prototype.callPolyfill = function (context, ...args): any {
+  return this.apply(context, args);
+};
 
 /**
  * function increment() { this.count++; return this.count; }
