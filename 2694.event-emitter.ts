@@ -4,13 +4,29 @@ type Subscription = {
 };
 
 class EventEmitter {
+  map = {};
   subscribe(eventName: string, callback: Callback): Subscription {
+    if (!(eventName in this.map)) {
+      this.map[eventName] = new Set();
+    }
+    this.map[eventName].add(callback);
     return {
-      unsubscribe: () => {},
+      unsubscribe: () => {
+        this.map[eventName].delete(callback);
+      },
     };
   }
 
-  emit(eventName: string, args: any[] = []): any {}
+  emit(eventName: string, args: any[] = []): any {
+    if (this.map[eventName] === undefined) {
+      return [];
+    }
+    let res: any[] = [];
+    this.map[eventName].forEach((cb) => {
+      res.push(cb(...args));
+    });
+    return res;
+  }
 }
 
 /**
