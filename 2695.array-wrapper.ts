@@ -1,9 +1,17 @@
 class ArrayWrapper {
-  constructor(nums: number[]) {}
+  nums: number[];
+  constructor(nums: number[]) {
+    this.nums = nums;
+  }
 
-  valueOf() {}
+  valueOf() {
+    return this.nums.reduce((a, b) => a + b, 0);
+  }
 
-  toString() {}
+  toString() {
+    let arr = this.nums.toString();
+    return `[${arr}]`;
+  }
 }
 
 /**
