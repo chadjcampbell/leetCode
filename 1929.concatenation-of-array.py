@@ -5,11 +5,11 @@
 #
 
 # @lc code=start
-from typing import List 
+from typing import List
 
 
 class Solution:
     def getConcatenation(self, nums: List[int]) -> List[int]:
-        return
+        i = 0
+        return nums*2
 # @lc code=end
-
