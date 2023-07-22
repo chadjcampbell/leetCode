@@ -14,16 +14,8 @@ class Solution:
         count = 0
         q = deque(students)
         while q:
-            for i in range(len(q)):
-                if count == len(q):
-                    return count
-                if q[i] == sandwiches[i]:
-                    q.pop()
-                    q.pop()
-                    count = 0
-                    break
-                else:
-                    q.append(q.popleft())
-                    count += 1
+            for student in q:
+                if student == sandwiches[0]:
+                    
         return 0
 # @lc code=end
