@@ -15,7 +15,8 @@ class ListNode:
         self.next = next
 
 
-class Solution:
+# iterative solution
+""" class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         curr = head
         prev = None
@@ -25,6 +26,12 @@ class Solution:
             prev = curr
             curr = temp
         return prev
+ """
+
+# recursive solution
 
 
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        return
 # @lc code=end
