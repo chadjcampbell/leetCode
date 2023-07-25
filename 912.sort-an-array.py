@@ -28,8 +28,8 @@ class Solution:
                 else:
                     result.append(right[j])
                     j += 1
-            result.append(left[i:])
-            result.append(right[j:])
+            result.extend(left[i:])
+            result.extend(right[j:])
             return result
         return mergeSort(nums)
 
