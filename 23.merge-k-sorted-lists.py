@@ -17,28 +17,34 @@ class ListNode:
 
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        finalHead = ListNode()
-        finalCurr = finalHead
+        if not lists or len(lists) == 0:
+            return None
+        while len(lists) > 1:
+            merged = []
+            for i in range(0, len(lists), 2):
+                left = lists[i]
+                right = lists[i+1] if i+1 < len(lists) else None
+                merged.append(self.mergeTwo(left, right))
+            lists = merged
+        return lists[0]
 
-        def mergeTwo(L1, L2):
-            dummyHead = ListNode()
-            curr = dummyHead
-            while L1 and L2:
-                if (L1.val <= L2.val):
-                    curr.next = L1
-                else:
-                    curr.next = L2
-                curr = curr.next
-            while L1:
+    def mergeTwo(self, L1, L2):
+        dummyHead = ListNode()
+        curr = dummyHead
+        while L1 and L2:
+            if (L1.val <= L2.val):
                 curr.next = L1
-                curr = curr.next
-            while L2:
+                L1 = L1.next
+            else:
                 curr.next = L2
-                curr = curr.next
-            return dummyHead.next
-
-        for i in range(len(lists)):
-            finalCurr.next = mergeTwo(lists[i-1], lists[i])
-        return finalHead.next
-
-# @lc code=end
+                L2 = L2.next
+            curr = curr.next
+        while L1:
+            curr.next = L1
+            curr = curr.next
+            L1 = L1.next
+        while L2:
+            curr.next = L2
+            curr = curr.next
+            L2 = L2.next
+        return dummyHead.next
