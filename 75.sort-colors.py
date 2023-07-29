@@ -11,13 +11,13 @@ from typing import List
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
         counts = [0, 0, 0]
-        for num in range(len(nums)):
+        for num in nums:
             counts[num] += 1
 
         i = 0
         for c in range(len(counts)):
-            for n in range(c):
-                nums[i] = n
+            for _ in range(counts[c]):
+                nums[i] = c
                 i += 1
 
 # @lc code=end
