@@ -4,21 +4,20 @@ from typing import List
 class Solution:
     def findFarmland(self, land: List[List[int]]) -> List[List[int]]:
         res = []
-
-        def get_group(row, col):
-            land[row][col] = -1
-            while row < len(land) - 1 and land[row+1][col] == 1:
-                get_group(row+1, col)
-            while col < len(land[row]) - 1 and land[row][col+1] == 1:
-                get_group(row, col+1)
-            return [row, col]
-
+        
         for i in range(len(land)):
             for j in range(len(land[i])):
-                if land[i][j] == 1:
-                    start = [i, j]
-                    end = get_group(i, j)
-                    area = start + end
-                    res.append(area)
+                # if i, j starts a new farm plot
+                if land[i][j] == 1 and (i == 0 or land[i - 1][j] == 0) and (j == 0 or land[i][j - 1] == 0):
+                    down = i
+                    right = j
+                    # go down
+                    while down + 1 < len(land) and land[down + 1][j] == 1:
+                        down += 1
+                    # go right
+                    while right + 1 < len(land[i]) and land[i][right + 1] == 1:
+                        right += 1
 
+                    res.append([i, j, down, right])
+                    
         return res
